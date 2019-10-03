@@ -5,6 +5,12 @@ public class NumFinder {
     private int largest = Integer.MIN_VALUE;
 
     public void find(int[] nums) {
+        if (null == nums) {
+            throw new IllegalArgumentException("required parameter 'nums' may not be null");
+        }
+        if (0 == nums.length) {
+            throw new IllegalArgumentException("required parameter 'nums' may not be empty");
+        }
         for(int n : nums) {
 
             if(n < smallest)
