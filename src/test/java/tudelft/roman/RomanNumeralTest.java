@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,22 +21,31 @@ public class RomanNumeralTest {
     @Test
     public void singleNumber() {
         RomanNumeral roman = new RomanNumeral();
-        int result = roman.convert("I");
-        Assertions.assertEquals(1, result);
+        Assertions.assertEquals(   1, roman.convert("I"));
+        Assertions.assertEquals(   5, roman.convert("V"));
+        Assertions.assertEquals(  10, roman.convert("X"));
+        Assertions.assertEquals(  50, roman.convert("L"));
+        Assertions.assertEquals( 100, roman.convert("C"));
+        Assertions.assertEquals( 500, roman.convert("D"));
+        Assertions.assertEquals(1000, roman.convert("M"));
     }
 
     @Test
     public void numberWithManyDigits() {
         RomanNumeral roman = new RomanNumeral();
-        int result = roman.convert("VIII");
-        Assertions.assertEquals(8, result);
+        Assertions.assertEquals(3341, roman.convert("MMDDCCLLXXVVVIIIIII"));
     }
 
     @Test
     public void numberWithSubtractiveNotation() {
         RomanNumeral roman = new RomanNumeral();
-        int result = roman.convert("IV");
-        Assertions.assertEquals(4, result);
+        Assertions.assertEquals(4, roman.convert("IV"));
+        Assertions.assertEquals(5, roman.convert("VX"));
+        Assertions.assertEquals(40, roman.convert("XL"));
+        Assertions.assertEquals(50, roman.convert("LC"));
+        Assertions.assertEquals(400, roman.convert("CD"));
+        Assertions.assertEquals(500, roman.convert("DM"));
+        Assertions.assertEquals(334, roman.convert("IVXLCDM"));
     }
 
     @Test
@@ -43,6 +53,18 @@ public class RomanNumeralTest {
         RomanNumeral roman = new RomanNumeral();
         int result = roman.convert("XLIV");
         Assertions.assertEquals(44, result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"VX", "XXC"})
+    public void numberWithIllegalSubstractions(final String illegalSubstraction) {
+        RomanNumeral romanNumeral = new RomanNumeral();
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    romanNumeral.convert(illegalSubstraction);
+                }
+        );
     }
 
     @Test
