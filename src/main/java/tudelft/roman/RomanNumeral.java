@@ -18,11 +18,23 @@ public class RomanNumeral {
         map.put('M', 1000);
     }
 
-    public int convert(String s) {
+    public int convert(final String s) {
+        if (null == s) {
+            throw new IllegalArgumentException("Required parameter 's' is null");
+        }
+        if (0 == s.length()) {
+            throw new IllegalArgumentException("Required parameter 's' is empty");
+        }
 
         int convertedNumber = 0;
         for(int i = 0; i < s.length(); i++) {
-            int currentNumber = map.get(s.charAt(i));
+            char currentChar = s.charAt(i);
+
+            if ( ! map.containsKey(currentChar )) {
+                throw new IllegalArgumentException("Parameters contains illegal character: " + currentChar);
+            }
+
+            int currentNumber = map.get(currentChar);
             int next = i+1 < s.length() ? map.get(s.charAt(i+1)) : 0;
 
             if(currentNumber >= next)
